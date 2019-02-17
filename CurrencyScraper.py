@@ -14,17 +14,29 @@ openURL = opener.open(url)
 
 src = BeautifulSoup(openURL.read(), features = "html5lib")
 rate = src.find("span", {"id": "knowledge-currency__tgt-amount"}).get("data-value")
+"""
 date =  datetime.date.today()
 day = datetime.datetime.now().strftime("%A")
 hour = datetime.datetime.now().strftime("%H")
 NZD = 1
-
+"""
+record = {'row_id':1,
+        'date':datetime.date.today(), 
+        'day':datetime.datetime.now().strftime("%A"), 
+        'hour':datetime.datetime.now().strftime("%H"), 
+        'NZD':1, 
+        'INR':rate}
 with open ('raw_data.csv', mode = 'a') as raw_data:
     Fieldnames = ['row_id','date','day','hour','NZD','INR']
     writer = csv.DictWriter(raw_data, fieldnames = Fieldnames)
     #write the header
     writer.writeheader()
-    writer.writerow({'row_id':1,'date':date,'day':day,'hour':hour,'NZD':NZD,'INR':660})
+    writer.writerow({'row_id':record['row_id'],
+                    'date':record['date'],
+                    'day':record['day'],
+                    'hour':record['hour'],
+                    'NZD':record['NZD'],
+                    'INR':record['INR']})
 
 """
 while urllib2.urlopen(url).getcode() == 200:
