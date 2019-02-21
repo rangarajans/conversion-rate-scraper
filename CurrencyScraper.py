@@ -8,24 +8,20 @@ import os
 #Base URL
 url = 'https://www.google.com/search?q=nzd+to+inr' 
 
-#Mask bot as a browser
+#Mask bot as a browser so Google doesn't block it.
 opener = urllib2.build_opener()
 opener.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36')]
 openURL = opener.open(url)
-#print openURL.read(500)
+
+# Test read - read the first 500 characters of HTML.
+# print openURL.read(500)
 
 src = BeautifulSoup(openURL.read(), features = "html5lib")
 rate = src.find("span", {"id": "knowledge-currency__tgt-amount"}).get("data-value")
 
 fieldNames = ['row_id','date','time','day','hour','NZD','INR']
 
-
-# if os.stat('raw_data.csv') == 0:
-#     with open ('raw_data.csv', mode = 'w') as raw_data:
-#         csv.DictWriter(raw_data, fieldnames = fieldNames).writeheader()
-
 with open ('raw_data.csv', mode = 'a') as raw_data:
-    # Fieldnames = ['row_id','date','time','day','hour','NZD','INR']
     writer = csv.DictWriter(raw_data, fieldnames = fieldNames)
     writeHeaderFlag = 0
     while os.stat('raw_data.csv').st_size == 0:
